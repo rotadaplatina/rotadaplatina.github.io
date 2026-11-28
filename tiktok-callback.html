@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rota da Platina · Conexão com o TikTok</title>
+<style>
+  body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#0d0716;color:#f3eefc;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+  .card{max-width:560px;width:92%;background:#1a0f2b;border:1px solid #3b2560;border-radius:16px;padding:28px}
+  h1{font-size:22px;margin:0 0 8px}
+  p{color:#c9bde0;line-height:1.5}
+  code{display:block;word-break:break-all;background:#0d0716;border:1px solid #3b2560;border-radius:10px;padding:14px;margin:14px 0;font-size:14px}
+  button{background:#e8c66a;color:#1a0f2b;border:0;border-radius:10px;padding:12px 18px;font-weight:700;cursor:pointer}
+  .erro{color:#ff8a8a}
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Conexão com o TikTok</h1>
+  <div id="conteudo"><p>Lendo a resposta do TikTok…</p></div>
+</div>
+<script>
+  var q = new URLSearchParams(location.search);
+  var el = document.getElementById('conteudo');
+  if (q.get('error')) {
+    el.innerHTML = '<p class="erro">O TikTok não autorizou: ' + (q.get('error_description') || q.get('error')).replace(/</g,'&lt;') + '</p>';
+  } else if (q.get('code')) {
+    var c = q.get('code');
+    el.innerHTML = '<p>Autorização recebida. Copie o código abaixo e cole no campo <b>codigo_tiktok</b> do robô no GitHub (ele vale poucos minutos).</p><code id="c"></code><button id="b">Copiar código</button>';
+    document.getElementById('c').textContent = c;
+    document.getElementById('b').onclick = function(){ navigator.clipboard.writeText(c); this.textContent = 'Copiado!'; };
+  } else {
+    el.innerHTML = '<p>Esta página recebe a autorização do TikTok para a Rota da Platina publicar os próprios vídeos.</p>';
+  }
+</script>
+</body>
+</html>
